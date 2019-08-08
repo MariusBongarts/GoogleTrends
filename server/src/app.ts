@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import * as bodyParser from 'body-parser';
 import entries from './routes/entries';
+import keywords from './routes/keywords';
 import startDB from './db';
 
 const port = 3000;
@@ -21,6 +22,7 @@ function configureApp(app: Express) {
   });
   app.get('/', (req, res) => res.redirect('/entries'));
   app.use('/entries', entries);
+  app.use('/keywords', keywords);
 }
 
 function originAllowed(req: any) {

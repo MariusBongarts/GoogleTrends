@@ -1,3 +1,4 @@
+import { Keyword } from './models/keyword';
 import { MongoClient } from 'mongodb';
 import { Express } from 'express';
 import { MongoGenericDAO } from './models/mongo-generic.dao';
@@ -17,6 +18,7 @@ export default async function startDB(app: Express) {
     const client = await MongoClient.connect(url);
     const db = client.db('myDB');
     app.locals.entryDAO = new MongoGenericDAO<Entry>(db, 'entries');
+    app.locals.keywordDAO = new MongoGenericDAO<Keyword>(db, 'keywords');
   }catch(err) {
     console.log('Could not connect to MongoDB: ', err.stack);
     process.exit(1);
