@@ -14,10 +14,7 @@ async function start() {
 
 async function main() {
   await start();
-  const db:MongoGenericDAO<Keyword> = app.locals.keywordDAO;
   await updateKeywords(app);
-  const words = await db.findAll();
-  console.log(words);
 }
 
 main();

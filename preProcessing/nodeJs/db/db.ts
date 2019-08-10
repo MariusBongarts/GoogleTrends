@@ -1,6 +1,5 @@
 import { Keyword } from './../models/keyword';
 import { MongoGenericDAO } from './dbModels/mongo-generic.dao';
-import { Entry } from './../../../client/src/models/entry';
 import { MongoClient } from 'mongodb';
 import { Express } from 'express';
 import { resolve } from 'url';

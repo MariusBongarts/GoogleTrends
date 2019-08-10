@@ -2,6 +2,7 @@ import { Keyword } from './models/keyword';
 import { MongoClient } from 'mongodb';
 import { Express } from 'express';
 import { MongoGenericDAO } from './models/mongo-generic.dao';
+import { Trend } from './models/trend';
 
 
 export default async function startDB(app: Express) {
@@ -15,8 +16,9 @@ export default async function startDB(app: Express) {
   try {
     const client = await MongoClient.connect(url);
     const db = client.db('googleTrends');
-    console.log("Successfully connected tp MongoDB")
+    console.log("Successfully connected to MongoDB")
     app.locals.keywordDAO = new MongoGenericDAO<Keyword>(db, 'keywords');
+    app.locals.trendDAO = new MongoGenericDAO<Trend>(db, 'trends');
   }catch(err) {
     console.log('Could not connect to MongoDB: ', err.stack);
     process.exit(1);
