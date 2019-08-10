@@ -35,7 +35,6 @@ export class BroncoCalendar extends LitElement {
     }
   }
 
-
   render() {
     return html`
   ${this.loaded ?
