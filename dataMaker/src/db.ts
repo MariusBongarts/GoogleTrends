@@ -15,6 +15,7 @@ export default async function startDB(app: Express) {
   try {
     const client = await MongoClient.connect(url);
     const db = client.db('myDB');
+    console.log("Successfully connected tp MongoDB")
     app.locals.keywordDAO = new MongoGenericDAO<Keyword>(db, 'keywords');
   }catch(err) {
     console.log('Could not connect to MongoDB: ', err.stack);

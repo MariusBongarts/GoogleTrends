@@ -1,5 +1,15 @@
 version: '3'
 services:
+
+  mongo:
+    image: mongo:latest
+    container_name: "mongodb"
+    volumes:
+      - ./data:/data
+    ports:
+        - 27018:27017
+    command: mongod
+
   server:
     build:
       context: ./server/
@@ -32,11 +42,3 @@ services:
       - server
     command: npm start
 
-  mongo:
-    image: mongo:latest
-    container_name: "mongodb"
-    volumes:
-      - ./data:/data/db
-    ports:
-        - 27018:27017
-    command: mongod
