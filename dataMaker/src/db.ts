@@ -5,8 +5,8 @@ import { MongoGenericDAO } from './models/mongo-generic.dao';
 
 
 export default async function startDB(app: Express) {
-  // const url = 'mongodb://stu-fb09-546:27017/';
-  const url = 'mongodb://0.0.0.0:27018/myDB';
+
+  const url = 'mongodb://0.0.0.0:27017/googleTrends';
   // const options = {
   //   useNewUrlParser: true,
   //   auth: { user: 'Marius', password: 'Marius' },
@@ -14,7 +14,7 @@ export default async function startDB(app: Express) {
   // };
   try {
     const client = await MongoClient.connect(url);
-    const db = client.db('myDB');
+    const db = client.db('googleTrends');
     console.log("Successfully connected tp MongoDB")
     app.locals.keywordDAO = new MongoGenericDAO<Keyword>(db, 'keywords');
   }catch(err) {

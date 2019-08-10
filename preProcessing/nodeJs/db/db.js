@@ -43,7 +43,7 @@ function startDB() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    url = 'mongodb://0.0.0.0:27018/myDB';
+                    url = 'mongodb://0.0.0.0:27017/myDB';
                     return [4 /*yield*/, mongodb_1.MongoClient.connect(url, { useNewUrlParser: true })];
                 case 1:
                     client = _a.sent();

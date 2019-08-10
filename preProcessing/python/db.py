@@ -7,7 +7,7 @@ from pymongo import MongoClient
 class DB:
     def __init__(self, dbName, collection):
       try:
-        conn = MongoClient("localhost", 27018)
+        conn = MongoClient("localhost", 27017)
         print("Connected successfully!!!")
       except:
         print("Could not connect to MongoDB")

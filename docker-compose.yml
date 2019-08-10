@@ -1,14 +1,14 @@
 version: '3'
 services:
 
-  mongo:
-    image: mongo:latest
-    container_name: "mongodb"
-    volumes:
-      - ./data:/data
-    ports:
-        - 27018:27017
-    command: mongod
+  # mongo:
+  #   image: mongo:latest
+  #   container_name: "mongodb"
+  #   volumes:
+  #     - ./data:/data
+  #   ports:
+  #       - 27017:27017
+  #   command: mongod
 
   server:
     build:
@@ -23,8 +23,8 @@ services:
     volumes:
       - ./server/src:/srv/app/server/src
     command: npm start
-    depends_on:
-      - mongo
+    # depends_on:
+    #   - mongo
 
   client:
     build:

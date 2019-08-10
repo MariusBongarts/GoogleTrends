@@ -6,7 +6,7 @@ import { Express } from 'express';
 import { resolve } from 'url';
 
 export default async function startDB() {
-  const url = 'mongodb://0.0.0.0:27018/myDB';
+  const url = 'mongodb://0.0.0.0:27017/myDB';
   // const options = {
   //   useNewUrlParser: true,
   //   auth: { user: 'Marius', password: 'Marius' },

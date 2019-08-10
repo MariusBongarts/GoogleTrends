@@ -7,8 +7,11 @@ import { resolve } from 'url';
 import { Entry } from './models/entry';
 
 export default async function startDB(app: Express) {
-  // const url = 'mongodb://stu-fb09-546:27017/';
-  const url = 'mongodb://mongodb:27017/myDB';
+  // const url = 'mongodb://mongodb:27017/myDB';
+
+  // Connects to mongo db on host system
+  const url = 'mongodb://host.docker.internal:27017/googleTrends';
+
   // const options = {
   //   useNewUrlParser: true,
   //   auth: { user: 'Marius', password: 'Marius' },
@@ -16,8 +19,7 @@ export default async function startDB(app: Express) {
   // };
   try {
     const client = await MongoClient.connect(url);
-    const db = client.db('myDB');
-    app.locals.entryDAO = new MongoGenericDAO<Entry>(db, 'entries');
+    const db = client.db('googleTrends');
     app.locals.keywordDAO = new MongoGenericDAO<Keyword>(db, 'keywords');
   }catch(err) {
     console.log('Could not connect to MongoDB: ', err.stack);
