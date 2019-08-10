@@ -5,7 +5,7 @@ export interface Trend extends Entity {
   time: string,
   date: Date,
   formattedTime: string,
-  formattedAxisTime: string,
   value: number,
+  geo: '' | 'DE' | 'US',
   type: 'daily' | 'hourly' | 'monthly'
 }

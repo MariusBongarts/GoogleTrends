@@ -23,8 +23,9 @@ export async function updateKeywords(app: Express) {
     const keyword = await db.findOne({keyword: word});
 
     // Add monthly trends
-    word === 'Apple' ? await saveMonthlyTrends(app, keyword) : '';
-    // await saveMonthlyTrends(app, keyword)
+    // word === 'Apple' ? await saveMonthlyTrends(app, keyword) : '';
+    setTimeout(async () => await saveMonthlyTrends(app, keyword), 100);
+
 
   });
 }

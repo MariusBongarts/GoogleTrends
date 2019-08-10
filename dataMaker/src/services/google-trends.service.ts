@@ -4,6 +4,9 @@ import { Trend } from './../models/trend';
 import { Keyword } from './../models/keyword';
 const googleTrends = require('google-trends-api');
 
+const HttpsProxyAgent = require('https-proxy-agent');
+
+let proxyAgent =  new HttpsProxyAgent('http://8.8.8.8:8080');
 
 
 export async function saveMonthlyTrends(app: Express, keyword: Keyword, startDate?: Date, endDate?: Date, geo?: string) {
@@ -11,8 +14,6 @@ export async function saveMonthlyTrends(app: Express, keyword: Keyword, startDat
   try {
     const trends = await db.findAll({ keywordId: keyword.id, type: 'monthly' });
     const latestTrend = trends.find(e => (e.date.getMonth() === new Date().getMonth()+1 && e.date.getFullYear() === new Date().getFullYear()));
-
-    console.log(latestTrend);
 
     // Update only new month
     if (!latestTrend && trends.length > 0) {
@@ -25,6 +26,7 @@ export async function saveMonthlyTrends(app: Express, keyword: Keyword, startDat
 
       const results = await googleTrends.interestOverTime(
         {
+          // agent: proxyAgent,
           keyword: keyword.keyword,
           startTime: startDate ? startDate : '',
           endTime: endDate ? endDate : '',
@@ -44,11 +46,9 @@ export async function saveMonthlyTrends(app: Express, keyword: Keyword, startDat
         keyword: keyword.keyword,
         type: 'monthly',
         formattedTime: jsonObject["formattedTime"],
-        formattedAxisTime: jsonObject["formattedTime"],
         value: jsonObject["value"][0],
         time: jsonObject["time"],
         date: date
-
       }
 
       // console.log(monthTrend);
