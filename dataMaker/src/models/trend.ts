@@ -6,6 +6,8 @@ export interface Trend extends Entity {
   date: Date,
   formattedTime: string,
   value: number,
+  diffValue: number,
+  diffValueAgg: number,
   geo: '' | 'DE' | 'US',
   type: 'daily' | 'hourly' | 'monthly'
 }
