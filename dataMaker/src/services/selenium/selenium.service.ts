@@ -22,7 +22,20 @@ export async function getAbsoulteTrends() {
   await driver.get('https://google.de');
   appRoot = await driver.findElement(By.name('q'));
   await appRoot.sendKeys("Amazon");
-  await appRoot.submit();
+  await driver.wait(until.elementLocated(By.className('xt-suggestions-search')));
+  const keywords = await driver.findElements(By.className('sbl1'));
+
+  keywords.forEach(async (keyword) => {
+    const trend = await keyword.findElements(By.className('xt-suggestions-search'));
+    const data = await trend[0].getText();
+    const wordElement = await keyword.findElements(By.tagName('span'));
+    const word = await wordElement[0].getText();
+    const onlyKeyword = word.substring(0, word.length - data.length);
+    console.log(onlyKeyword);
+    console.log(data);
+  });
+
+  // await appRoot.submit();
 
 }
 
