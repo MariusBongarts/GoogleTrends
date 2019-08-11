@@ -3,7 +3,7 @@ import { MongoGenericDAO } from './../models/mongo-generic.dao';
 import { companieNames } from '../data/constants';
 import { Keyword } from '../models/keyword';
 import uuid = require('uuid');
-import { saveMonthlyTrends } from './google-trends.service';
+import { saveMonthlyTrends, saveDailyTrends } from './google-trends.service';
 
 export async function updateKeywords(app: Express) {
   const db: MongoGenericDAO<Keyword> = app.locals.keywordDAO;
@@ -23,8 +23,8 @@ export async function updateKeywords(app: Express) {
     const keyword = await db.findOne({keyword: word});
 
     // Add monthly trends
-    //word === 'Apple' ? await saveMonthlyTrends(app, keyword) : '';
-    await saveMonthlyTrends(app, keyword);
+    word === 'Alibaba' ? await saveDailyTrends(app, keyword) : '';
+    // await saveMonthlyTrends(app, keyword);
 
 
   });
