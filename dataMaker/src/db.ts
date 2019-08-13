@@ -1,3 +1,4 @@
+import { SearchVolume } from './models/searchVolume';
 import { Keyword } from './models/keyword';
 import { MongoClient } from 'mongodb';
 import { Express } from 'express';
@@ -19,6 +20,7 @@ export default async function startDB(app: Express) {
     console.log("Successfully connected to MongoDB")
     app.locals.keywordDAO = new MongoGenericDAO<Keyword>(db, 'keywords');
     app.locals.trendDAO = new MongoGenericDAO<Trend>(db, 'trends');
+    app.locals.searchVolumeDAO = new MongoGenericDAO<SearchVolume>(db, 'searchVolume');
   }catch(err) {
     console.log('Could not connect to MongoDB: ', err.stack);
     process.exit(1);
