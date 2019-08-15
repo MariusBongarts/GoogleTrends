@@ -1,11 +1,9 @@
-import { Keyword } from './../../models/keyword';
-import { MongoGenericDAO } from './../../models/mongo-generic.dao';
+import { Keyword } from '../../models/keyword';
+import { MongoGenericDAO } from '../../models/mongo-generic.dao';
 import { Express } from 'express';
 import { WebElement, Builder, Browser, WebDriver, By, until, logging } from 'selenium-webdriver';
 let chrome = require("selenium-webdriver/chrome");
 
-import * as path from 'path';
-import * as fs from 'fs';
 import uuid = require('uuid');
 import { SearchVolume } from '../../models/searchVolume';
 
@@ -18,6 +16,10 @@ export class SeleniumSearchVolume {
   async setup(app: Express) {
     this.db = app.locals.keywordDAO;
     this.dbVolume = app.locals.searchVolumeDAO;
+
+    const test = await this.dbVolume.findAll();
+    const filtering = test.filter(e => e.keyword.toLowerCase() === "inditex jobs");
+
     let options = new chrome.Options();
     const extension = this.encode('./keywordExtension.crx');
     options.addExtensions(extension);
@@ -32,7 +34,7 @@ export class SeleniumSearchVolume {
     await this.driver.sleep(500);
   }
 
-  async saveAbsoulteTrends2(words: Keyword[]) {
+  async saveAbsoulteTrends(words: Keyword[]) {
     this.appRoot = await this.driver.findElement(By.name('q'));
     for (let i = 0; i <= words.length; i++) {
       await this.doSearch(words[i]);
@@ -48,6 +50,7 @@ export class SeleniumSearchVolume {
       await this.driver.sleep(1000);
       await this.driver.wait(until.elementLocated(By.className('xt-suggestions-search')));
       const keywords = await this.driver.findElements(By.className('sbl1'));
+
 
       for (let i = 0; i <= keywords.length; i++) {
         const trend = await keywords[i].findElements(By.className('xt-suggestions-search'));
@@ -67,9 +70,10 @@ export class SeleniumSearchVolume {
           await this.db.create(newKeyword);
           sibling = await this.db.findOne({ keyword: onlyKeyword });
           console.log("Created sibling");
-          console.log(sibling);
 
         }
+
+
 
         const volume = Number(data.split('/')[0].split('.').join(""));
         const cpc = data.split(' ')[2];
@@ -82,7 +86,13 @@ export class SeleniumSearchVolume {
           cpc: cpc,
           competition: competition
         };
-        volume && cpc && competition ? await this.dbVolume.create(searchVolume) : '';
+        console.log(searchVolume);
+
+        // Only updated when value changed or entry is new
+        const existingEntry = await this.dbVolume.findOne({keywordId: searchVolume.keywordId}) as SearchVolume;
+        let hasChanged = true;
+        existingEntry && existingEntry.searchVolume === searchVolume.searchVolume ? hasChanged = false : hasChanged = true;
+        hasChanged && volume && cpc && competition ? await this.dbVolume.create(searchVolume) : '';
       }
     } catch (error) {
       await this.appRoot.clear();

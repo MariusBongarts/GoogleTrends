@@ -1,7 +1,7 @@
 import { Express } from 'express';
-import { MongoGenericDAO } from './../models/mongo-generic.dao';
-import { Trend } from './../models/trend';
-import { Keyword } from './../models/keyword';
+import { MongoGenericDAO } from '../models/mongo-generic.dao';
+import { Trend } from '../models/trend';
+import { Keyword } from '../models/keyword';
 const googleTrends = require('google-trends-api');
 
 const HttpsProxyAgent = require('https-proxy-agent');
@@ -87,7 +87,12 @@ export async function saveMonthlyTrends(app: Express, keyword: Keyword, startDat
     // Retry once
     console.log(retried);
     console.log("Do retry for " + keyword.keyword);
-    await saveMonthlyTrends(app, keyword, startDate, endDate, geo);
+    try {
+      await saveMonthlyTrends(app, keyword, startDate, endDate, geo);
+    }
+    catch (error) {
+      retried = true;
+    }
     retried = true;
     console.log(error);
 
@@ -127,8 +132,8 @@ export async function saveDailyTrends(app: Express, keyword: Keyword, startDate?
       let lastDiffAgg = 0;
 
       console.log(result[0]);
-      console.log(result[result.length -2]);
-      console.log(result[result.length -1]);
+      console.log(result[result.length - 2]);
+      console.log(result[result.length - 1]);
 
       // result.forEach(async (jsonObject, index) => {
 

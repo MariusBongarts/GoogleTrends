@@ -5,6 +5,7 @@ import { MongoGenericDAO } from './models/mongo-generic.dao';
 import { User } from './models/user';
 import { resolve } from 'url';
 import { Entry } from './models/entry';
+import { SearchVolume } from './models/searchVolume';
 
 export default async function startDB(app: Express) {
   // const url = 'mongodb://mongodb:27017/myDB';
@@ -21,6 +22,7 @@ export default async function startDB(app: Express) {
     const client = await MongoClient.connect(url);
     const db = client.db('googleTrends');
     app.locals.keywordDAO = new MongoGenericDAO<Keyword>(db, 'keywords');
+    app.locals.searchVolumeDAO = new MongoGenericDAO<SearchVolume>(db, 'searchVolume');
   }catch(err) {
     console.log('Could not connect to MongoDB: ', err.stack);
     process.exit(1);
